@@ -1,34 +1,35 @@
 {
   "expo": {
     "name": "Mawada",
-    "slug": "Mawada",
+    "slug": "mawada",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
     "newArchEnabled": true,
     "splash": {
-      "image": "./assets/splash-icon.png",
+      "image": "./assets/logo.png",
       "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#C9A460"
     },
     "ios": {
       "supportsTablet": true
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#ffffff"
+        "foregroundImage": "./assets/logo.png",
+        "backgroundColor": "#C9A460"
       },
       "package": "com.alcaranoisco.Mawada"
     },
     "web": {
-      "favicon": "./assets/favicon.png"
+      "favicon": "./assets/logo.png"
     },
     "extra": {
       "eas": {
-        "projectId": "73675017-4af1-4929-9010-abef86053ef7"
+        "projectId": "458e0d41-d6ee-47f5-829c-cda63ddfd728"
       }
-    }
+    },
+    "owner": "salaheddinet"
   }
 }
