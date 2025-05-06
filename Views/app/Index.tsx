@@ -5,15 +5,18 @@ import {
   BottomTabNavigationOptions,
   createBottomTabNavigator,
 } from "@react-navigation/bottom-tabs";
-import { AntDesign } from "@expo/vector-icons";
+import { AntDesign, Ionicons } from "@expo/vector-icons";
 import Home from "./Home";
+import LikesScreen from '../../src/app/Likes/LikesScreen';
+import ChatScreen from "../../src/app/Chat/ChatScreen";
+import ProfileScreen from "../../src/app/Profile/ProfileScreen";
 import Colors from "../Colors/Color";
-
-
+import Chat from "app/Chat/Index";
+import Profile from "app/Profile/Index";
 interface Screen {
   name: string;
   component: React.FC<any>;
-  icon: React.FC<{ focused: boolean }>;
+  icon: (props: { focused: boolean; color: string; size: number }) => React.ReactNode;
 }
 
 const Tab = createBottomTabNavigator();
@@ -28,42 +31,168 @@ const ProtectedScreens: React.FC = () => {
   };
 
   const commonTabBarStyle = {
-    height: 50,
-    backgroundColor: Colors.primary,
+    height: 90,
+    backgroundColor: Colors.background,
     borderTopWidth: 0,
-    borderRadius:24,
-    marginBottom: 10,
-    marginLeft: 6,
-    marginRight: 10,
+    elevation: 8,
+    shadowOpacity: 0.1,
+    shadowColor: Colors.primary,
+    shadowOffset: { width: 0, height: -4 },
+    shadowRadius: 8,
+    paddingBottom: 25,
+    paddingTop: 15,
+    paddingHorizontal: 20,
+    position: 'absolute' as const,
+    bottom: 0,
+    left: 0,
+    right: 0,
+    zIndex: 1,
+    marginBottom: 20,
+  };
+
+  const tabBarItemStyle = {
+    paddingVertical: 12,
+    marginBottom: 15,
+    flex: 1,
+    alignItems: 'center' as const,
+    justifyContent: 'center' as const,
   };
 
   const screens: Screen[] = [
     {
       name: "الرئيسية",
       component: Home,
-      icon: ({ focused }) => (
-        <AntDesign name="home" size={22} color={focused ? "#FFFFFF" : "#6F6F6F"} />
+      icon: ({ focused, color, size }) => (
+        <View style={{ 
+          flexDirection: 'row', 
+          alignItems: 'center', 
+          justifyContent: 'center',
+          width: focused ? 100 : 40,
+          height: 40,
+          backgroundColor: focused ? Colors.primary : 'transparent',
+          paddingHorizontal: focused ? 4 : 0,
+          paddingVertical: 8,
+          borderRadius: 16,
+        }}>
+          <Ionicons name="home" size={22} color={focused ? Colors.background : Colors.mutedText} />
+          {focused && (
+            <Text 
+              style={{
+                color: Colors.background,
+                fontWeight: "600",
+                fontSize: 12,
+                marginLeft: 4,
+                textAlign: 'right',
+                flexShrink: 1,
+              }}
+              numberOfLines={1}
+            >
+              الرئيسية
+            </Text>
+          )}
+        </View>
       ),
     },
     {
-      name: "الإشعارات",
-      component: Home,
-      icon: ({ focused }) => (
-        <AntDesign name="notification" size={22} color={focused ? "#FFFFFF" : "#6F6F6F"} />
+      name: "الإعجابات",
+      component: LikesScreen,
+      icon: ({ focused, color, size }) => (
+        <View style={{ 
+          flexDirection: 'row', 
+          alignItems: 'center', 
+          justifyContent: 'center',
+          width: focused ? 100 : 40,
+          height: 40,
+          backgroundColor: focused ? Colors.primary : 'transparent',
+          paddingHorizontal: focused ? 4 : 0,
+          paddingVertical: 8,
+          borderRadius: 16,
+        }}>
+          <AntDesign name="heart" size={22} color={focused ? Colors.background : Colors.mutedText} />
+          {focused && (
+            <Text 
+              style={{
+                color: Colors.background,
+                fontWeight: "600",
+                fontSize: 12,
+                marginLeft: 4,
+                textAlign: 'right',
+                flexShrink: 1,
+              }}
+              numberOfLines={1}
+            >
+              الإعجابات
+            </Text>
+          )}
+        </View>
       ),
     },
     {
-      name: "السجل",
-      component: Home,
-      icon: ({ focused }) => (
-        <AntDesign name="clockcircleo" size={22} color={focused ? "#FFFFFF" : "#6F6F6F"} />
+      name: "المحادثات",
+      component: Chat,
+      icon: ({ focused, color, size }) => (
+        <View style={{ 
+          flexDirection: 'row', 
+          alignItems: 'center', 
+          justifyContent: 'center',
+          width: focused ? 100 : 40,
+          height: 40,
+          backgroundColor: focused ? Colors.primary : 'transparent',
+          paddingHorizontal: focused ? 4 : 0,
+          paddingVertical: 8,
+          borderRadius: 16,
+        }}>
+          <Ionicons name="chatbubble-ellipses" size={22} color={focused ? Colors.background : Colors.mutedText} />
+          {focused && (
+            <Text 
+              style={{
+                color: Colors.background,
+                fontWeight: "600",
+                fontSize: 12,
+                marginLeft: 4,
+                textAlign: 'right',
+                flexShrink: 1,
+              }}
+              numberOfLines={1}
+            >
+              المحادثات
+            </Text>
+          )}
+        </View>
       ),
     },
     {
       name: "حسابي",
-      component: Home,
-      icon: ({ focused }) => (
-        <AntDesign name="user" size={22} color={focused ? "#FFFFFF" : "#6F6F6F"} />
+      component: Profile,
+      icon: ({ focused, color, size }) => (
+        <View style={{ 
+          flexDirection: 'row', 
+          alignItems: 'center', 
+          justifyContent: 'center',
+          width: focused ? 100 : 40,
+          height: 40,
+          backgroundColor: focused ? Colors.primary : 'transparent',
+          paddingHorizontal: focused ? 4 : 0,
+          paddingVertical: 8,
+          borderRadius: 16,
+        }}>
+          <Ionicons name="person" size={22} color={focused ? Colors.background : Colors.mutedText} />
+          {focused && (
+            <Text 
+              style={{
+                color: Colors.background,
+                fontWeight: "600",
+                fontSize: 12,
+                marginLeft: 4,
+                textAlign: 'right',
+                flexShrink: 1,
+              }}
+              numberOfLines={1}
+            >
+              حسابي
+            </Text>
+          )}
+        </View>
       ),
     },
   ];
@@ -75,7 +204,6 @@ const ProtectedScreens: React.FC = () => {
         tabBarStyle: commonTabBarStyle,
         tabBarLabel: () => null,
         headerShown: false,
-  
       }}
     >
       {screens.map((screen, index) => (
@@ -84,12 +212,7 @@ const ProtectedScreens: React.FC = () => {
           name={screen.name}
           component={screen.component}
           options={{
-            tabBarIcon: ({ focused } :any) => screen.icon({ focused }),
-            tabBarLabel: ({ focused } :any) => (
-              <Text color={focused ? "#FFFFFF" : "#6F6F6F"} fontWeight={500} fontSize={"10px"}>
-                {screen.name}
-              </Text>
-            ),
+            tabBarIcon: ({ focused, color, size }) => screen.icon({ focused, color, size }),
           }}
           listeners={{
             tabPress: () => handleTabPress(screen.name),

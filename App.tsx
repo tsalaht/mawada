@@ -1,17 +1,19 @@
 import { StatusBar } from "expo-status-bar";
 import { useCallback, useEffect } from "react";
-import { StyleSheet, Text, View,SafeAreaView ,I18nManager} from "react-native";
+import { StyleSheet, Text, View, SafeAreaView, I18nManager } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { useFonts } from "expo-font";
 import { NativeBaseProvider, extendTheme } from "native-base";
 import AuthPages from "./Views/Auth/Index";
 import * as SplashScreen from "expo-splash-screen";
 import { Provider } from "react-redux";
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 import store from "./store/store";
 import Screens from "./Views/Index";
-export default function App() {
 
+export default function App() {
   SplashScreen.preventAutoHideAsync();
   useEffect(() => {
     if (I18nManager.isRTL) {
@@ -19,20 +21,20 @@ export default function App() {
       I18nManager.allowRTL(false);
     }
   }, []);
+
   let [fontsLoaded] = useFonts({
-  Tajawal_200ExtraLight: require("./assets/fonts/Tajawal/Tajawal-ExtraLight.ttf"),
-  Tajawal_300Light: require("./assets/fonts/Tajawal/Tajawal-Light.ttf"),
-  Tajawal_400Regular: require("./assets/fonts/Tajawal/Tajawal-Regular.ttf"),
-  Tajawal_500Medium: require("./assets/fonts/Tajawal/Tajawal-Medium.ttf"),
-  Tajawal_700Bold: require("./assets/fonts/Tajawal/Tajawal-Bold.ttf"),
-  Tajawal_800ExtraBold: require("./assets/fonts/Tajawal/Tajawal-ExtraBold.ttf"),
-  Tajawal_900Black: require("./assets/fonts/Tajawal/Tajawal-Black.ttf"),
+    Tajawal_200ExtraLight: require("./assets/fonts/Tajawal/Tajawal-ExtraLight.ttf"),
+    Tajawal_300Light: require("./assets/fonts/Tajawal/Tajawal-Light.ttf"),
+    Tajawal_400Regular: require("./assets/fonts/Tajawal/Tajawal-Regular.ttf"),
+    Tajawal_500Medium: require("./assets/fonts/Tajawal/Tajawal-Medium.ttf"),
+    Tajawal_700Bold: require("./assets/fonts/Tajawal/Tajawal-Bold.ttf"),
+    Tajawal_800ExtraBold: require("./assets/fonts/Tajawal/Tajawal-ExtraBold.ttf"),
+    Tajawal_900Black: require("./assets/fonts/Tajawal/Tajawal-Black.ttf"),
   });
 
   const newFontTheme = {
     fontConfig: {
       Tajawal: {
-      
         200: {
           normal: "Tajawal_200ExtraLight",
         },
@@ -67,6 +69,7 @@ export default function App() {
   };
 
   const theme = extendTheme({ ...newFontTheme });
+
   useEffect(() => {
     if (fontsLoaded) {
       SplashScreen.hideAsync().catch((error) => {
@@ -76,16 +79,19 @@ export default function App() {
   }, [fontsLoaded]);
 
   if (!fontsLoaded) return null;
-  return (
-    <Provider store={store}>
 
-        <NativeBaseProvider theme={theme}>
-          <NavigationContainer >
-    <Screens/>
-          </NavigationContainer>
-        </NativeBaseProvider>
- 
-    </Provider>
+  return (
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <SafeAreaProvider>
+        <Provider store={store}>
+          <NativeBaseProvider theme={theme}>
+            <NavigationContainer>
+              <Screens />
+            </NavigationContainer>
+          </NativeBaseProvider>
+        </Provider>
+      </SafeAreaProvider>
+    </GestureHandlerRootView>
   );
 }
 
@@ -95,6 +101,6 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     alignItems: "center",
     justifyContent: "center",
-    width:'100%'
+    width: '100%'
   },
 });

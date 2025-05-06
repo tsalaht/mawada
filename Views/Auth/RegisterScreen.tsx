@@ -16,14 +16,16 @@ import {
   Progress,
   Icon,
   useToast,
+  Pressable,
+  Modal,
 } from 'native-base';
 import { useRoute, useNavigation } from '@react-navigation/native';
 import { LinearGradient } from 'expo-linear-gradient';
-import DateTimePicker from '@react-native-community/datetimepicker';
 import { Platform, Dimensions } from 'react-native';
 import Swiper from 'react-native-swiper';
 import Colors from '../Colors/Color';
 import { AntDesign } from '@expo/vector-icons';
+import { format } from 'date-fns';
 
 const RegisterScreen = () => {
   const route = useRoute();
@@ -96,11 +98,9 @@ const RegisterScreen = () => {
     }
   };
 
-  const handleDateChange = (event: any, selectedDate?: Date) => {
-    setShowDatePicker(Platform.OS === 'ios');
-    if (selectedDate) {
-      handleChange('dob', selectedDate);
-    }
+  const handleDateChange = (selectedDate: Date) => {
+    setFormData(prev => ({ ...prev, dob: selectedDate }));
+    setShowDatePicker(false);
   };
 
   const validateCurrentSection = () => {
@@ -257,7 +257,7 @@ const RegisterScreen = () => {
     
     return (
       <Box px={4} py={4} mt={4}>
-        <Progress value={progress} colorScheme="primary" size="sm" bg={Colors.primary} />
+        <Progress value={progress} colorScheme={Colors.primary} size="sm" bg={Colors.border} />
         <Text fontSize="xs" color={Colors.mutedText} textAlign="right" mt={1}>
           {currentIndex + 1} من {totalSteps}
         </Text>
@@ -366,22 +366,22 @@ const RegisterScreen = () => {
         title: "المعلومات الشخصية",
         content: (
           <FormControl>
-            <Button
-              variant="outline"
-              onPress={() => setShowDatePicker(true)}
-              mb={3}
-              _text={{ color: Colors.primary, textAlign: 'right' }}
-            >
-              {formData.dob.toLocaleDateString('en-EA')}
-            </Button>
-            {showDatePicker && (
-              <DateTimePicker
-                value={formData.dob}
-                mode="date"
-                display={Platform.OS === 'ios' ? 'inline' : 'default'}
-                onChange={handleDateChange}
+            <Pressable onPress={() => setShowDatePicker(true)}>
+              <Input
+                value={format(formData.dob, 'dd/MM/yyyy')}
+                isReadOnly
+                rightElement={
+                  <Icon
+                    as={AntDesign}
+                    name="calendar"
+                    size={5}
+                    mr={2}
+                    color="gray.400"
+                  />
+                }
               />
-            )}
+            </Pressable>
+            {renderDatePicker()}
             <Input
               placeholder="العمر"
               value={formData.age}
@@ -683,6 +683,39 @@ const RegisterScreen = () => {
           {section.content}
         </Box>
       </Box>
+    );
+  };
+
+  const renderDatePicker = () => {
+    return (
+      <Modal isOpen={showDatePicker} onClose={() => setShowDatePicker(false)}>
+        <Modal.Content>
+          <Modal.Header>Select Date of Birth</Modal.Header>
+          <Modal.Body>
+            <ScrollView>
+              <VStack space={4}>
+                {Array.from({ length: 100 }, (_, i) => {
+                  const year = new Date().getFullYear() - i;
+                  return (
+                    <Pressable
+                      key={year}
+                      onPress={() => {
+                        const newDate = new Date(formData.dob);
+                        newDate.setFullYear(year);
+                        handleDateChange(newDate);
+                      }}
+                      p={2}
+                      bg={formData.dob.getFullYear() === year ? "primary.100" : "white"}
+                    >
+                      <Text>{year}</Text>
+                    </Pressable>
+                  );
+                })}
+              </VStack>
+            </ScrollView>
+          </Modal.Body>
+        </Modal.Content>
+      </Modal>
     );
   };
 
