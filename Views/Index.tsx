@@ -3,13 +3,13 @@ import { StyleSheet } from 'react-native';
 import { useSelector } from 'react-redux';
 import { RootState } from '../store/store';
 import AuthPages from './Auth/Index';
-import ProtectedScreens from './app/Index';
+import Screens from '../Views/app/Screens';
 
-const Screens = () => {
+const MainScreens = () => {
   const passHome = useSelector((state: RootState) => state.passHome.value);
-  return passHome ? <ProtectedScreens /> : <AuthPages />;
+  return passHome ? <Screens /> : <AuthPages />;
 };
 
 const styles = StyleSheet.create({});
 
-export default Screens;
+export default MainScreens;

@@ -9,6 +9,7 @@ import * as SplashScreen from "expo-splash-screen";
 import { Provider } from "react-redux";
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
+import MainScreens from "./Views/Index";
 
 import store from "./store/store";
 import Screens from "./Views/Index";
@@ -86,7 +87,7 @@ export default function App() {
         <Provider store={store}>
           <NativeBaseProvider theme={theme}>
             <NavigationContainer>
-              <Screens />
+              <MainScreens />
             </NavigationContainer>
           </NativeBaseProvider>
         </Provider>

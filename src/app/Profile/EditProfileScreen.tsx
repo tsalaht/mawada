@@ -54,14 +54,12 @@ const EditProfileScreen: React.FC = () => {
   };
 
   const pickImage = async () => {
-    // Request permission to access media library
     const permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
     if (!permissionResult.granted) {
       Alert.alert('تنبيه', 'الرجاء منح الإذن للوصول إلى المعرض!');
       return;
     }
 
-    // Launch image picker
     const result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
       allowsEditing: true,
@@ -75,7 +73,6 @@ const EditProfileScreen: React.FC = () => {
   };
 
   const handleSave = () => {
-    // Save all profile data when Save button is pressed
     const profileData = {
       name,
       age,
@@ -85,7 +82,6 @@ const EditProfileScreen: React.FC = () => {
       profileImage,
     };
     console.log('Saving profile:', profileData);
-    // In a real app, you might send profileData to a backend or store it locally
     navigation.goBack();
   };
 
@@ -96,6 +92,19 @@ const EditProfileScreen: React.FC = () => {
         style={{ flex: 1 }}
       >
         <Box safeAreaTop />
+        <Box flexDirection="row" justifyContent="space-between" alignItems="center" px={4} mt={-4}>
+          <Pressable onPress={() => navigation.goBack()}>
+            <Icon
+              as={MaterialIcons}
+              name="arrow-back"
+              size="lg"
+              color={Colors.primary}
+            />
+          </Pressable>
+          <Text bold fontSize="xl" color={Colors.text} textAlign="right">
+            تعديل الملف الشخصي
+          </Text>
+        </Box>
         <ScrollView
           px={4}
           pt={4}
@@ -103,7 +112,6 @@ const EditProfileScreen: React.FC = () => {
           showsVerticalScrollIndicator={false}
         >
           <VStack space={6}>
-            {/* Profile Photo */}
             <Box
               bg="white"
               p={6}
@@ -160,8 +168,6 @@ const EditProfileScreen: React.FC = () => {
                 </Button>
               </VStack>
             </Box>
-
-            {/* Basic Information */}
             <Box
               bg="white"
               p={6}
@@ -202,8 +208,6 @@ const EditProfileScreen: React.FC = () => {
                 />
               </VStack>
             </Box>
-
-            {/* About Me */}
             <Box
               bg="white"
               p={6}
@@ -231,8 +235,6 @@ const EditProfileScreen: React.FC = () => {
                 />
               </VStack>
             </Box>
-
-            {/* Interests */}
             <Box
               bg="white"
               p={6}
@@ -274,8 +276,6 @@ const EditProfileScreen: React.FC = () => {
                 </HStack>
               </VStack>
             </Box>
-
-            {/* Save Button */}
             <Button
               bg={Colors.primary}
               _pressed={{ bg: Colors.primary + '80' }}

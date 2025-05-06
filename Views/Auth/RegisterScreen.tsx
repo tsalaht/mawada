@@ -1,36 +1,26 @@
 import React, { useState, useEffect, useRef } from 'react';
 import {
-  Box,
-  VStack,
-  Input,
-  Button,
+  View,
   Text,
-  Select,
-  TextArea,
-  Switch,
+  StyleSheet,
+  TouchableOpacity,
+  TextInput,
+  KeyboardAvoidingView,
+  Platform,
   ScrollView,
-  Slider,
-  HStack,
-  FormControl,
-  Stack,
-  Progress,
-  Icon,
-  useToast,
-  Pressable,
+  Switch,
   Modal,
-} from 'native-base';
+  Alert,
+} from 'react-native';
 import { useRoute, useNavigation } from '@react-navigation/native';
 import { LinearGradient } from 'expo-linear-gradient';
-import { Platform, Dimensions } from 'react-native';
-import Swiper from 'react-native-swiper';
+import { MaterialIcons, AntDesign } from '@expo/vector-icons';
 import Colors from '../Colors/Color';
-import { AntDesign } from '@expo/vector-icons';
 import { format } from 'date-fns';
 
 const RegisterScreen = () => {
   const route = useRoute();
   const navigation: any = useNavigation();
-  const toast = useToast();
   const { type }: any = route.params || {};
   const isHusband = type === 'husband';
   const isWife = type === 'wife';
@@ -107,76 +97,62 @@ const RegisterScreen = () => {
     switch (currentIndex) {
       case 0: // Account Information
         if (!formData.fullName || !formData.email || !formData.password || !formData.confirmPassword) {
-          toast.show({
-            title: "خطأ",
-            description: "يرجى ملء جميع الحقول المطلوبة في معلومات الحساب",
-            variant: "solid",
-            placement: "top",
-          });
+          Alert.alert(
+            "خطأ",
+            "يرجى ملء جميع الحقول المطلوبة في معلومات الحساب"
+          );
           return false;
         }
         if (formData.password !== formData.confirmPassword) {
-          toast.show({
-            title: "خطأ",
-            description: "كلمة المرور وتأكيدها غير متطابقتين",
-            variant: "solid",
-            placement: "top",
-          });
+          Alert.alert(
+            "خطأ",
+            "كلمة المرور وتأكيدها غير متطابقتين"
+          );
           return false;
         }
         break;
       case 1: // Personal Details
         if (!formData.dob || !formData.maritalStatus || !formData.nationality || !formData.country || !formData.city) {
-          toast.show({
-            title: "خطأ",
-            description: "يرجى ملء جميع الحقول المطلوبة في المعلومات الشخصية",
-            variant: "solid",
-            placement: "top",
-          });
+          Alert.alert(
+            "خطأ",
+            "يرجى ملء جميع الحقول المطلوبة في المعلومات الشخصية"
+          );
           return false;
         }
         break;
       case 2: // Physical Attributes
         if (!formData.height || !formData.weight || !formData.skinTone || !formData.bodyType) {
-          toast.show({
-            title: "خطأ",
-            description: "يرجى ملء جميع الحقول المطلوبة في الصفات الجسدية",
-            variant: "solid",
-            placement: "top",
-          });
+          Alert.alert(
+            "خطأ",
+            "يرجى ملء جميع الحقول المطلوبة في الصفات الجسدية"
+          );
           return false;
         }
         break;
       case 3: // Religious & Lifestyle
         if (!formData.religion) {
-          toast.show({
-            title: "خطأ",
-            description: "يرجى ملء جميع الحقول المطلوبة في الدين ونمط الحياة",
-            variant: "solid",
-            placement: "top",
-          });
+          Alert.alert(
+            "خطأ",
+            "يرجى ملء جميع الحقول المطلوبة في الدين ونمط الحياة"
+          );
           return false;
         }
         break;
       case 4: // Professional Information
         if (!formData.employment || !formData.education) {
-          toast.show({
-            title: "خطأ",
-            description: "يرجى ملء جميع الحقول المطلوبة في الوظيفة والدخل",
-            variant: "solid",
-            placement: "top",
-          });
+          Alert.alert(
+            "خطأ",
+            "يرجى ملء جميع الحقول المطلوبة في الوظيفة والدخل"
+          );
           return false;
         }
         break;
       case 5: // Additional Information
         if (!formData.describeSelf || !formData.describePartner) {
-          toast.show({
-            title: "خطأ",
-            description: "يرجى ملء جميع الحقول المطلوبة في نبذة عنك",
-            variant: "solid",
-            placement: "top",
-          });
+          Alert.alert(
+            "خطأ",
+            "يرجى ملء جميع الحقول المطلوبة في نبذة عنك"
+          );
           return false;
         }
         break;
@@ -207,100 +183,222 @@ const RegisterScreen = () => {
 
   const handleSubmit = () => {
     if (!formData.fullName || !formData.email || !formData.password) {
-      toast.show({
-        title: "خطأ",
-        description: "يرجى ملء جميع الحقول المطلوبة",
-        variant: "solid",
-        placement: "top",
-      });
+      Alert.alert(
+        "خطأ",
+        "يرجى ملء جميع الحقول المطلوبة"
+      );
       return;
     }
     if (formData.password !== formData.confirmPassword) {
-      toast.show({
-        title: "خطأ",
-        description: "كلمة المرور وتأكيدها غير متطابقتين",
-        variant: "solid",
-        placement: "top",
-      });
+      Alert.alert(
+        "خطأ",
+        "كلمة المرور وتأكيدها غير متطابقتين"
+      );
       return;
     }
     console.log(formData);
     navigation.navigate('Home');
   };
 
-  const inputStyle = {
-    bg: Colors.background,
-    borderRadius: 'lg',
-    borderColor: Colors.border,
-    _focus: {
+  const styles = StyleSheet.create({
+    container: {
+      flex: 1,
+      backgroundColor: Colors.background,
+      paddingVertical:40
+    },
+    gradient: {
+      flex: 1,
+    },
+    scrollContent: {
+      flexGrow: 1,
+      padding: 20,
+    },
+    header: {
+      marginTop: 60,
+      marginBottom: 40,
+    },
+    title: {
+      fontSize: 32,
+      color: Colors.text,
+      marginBottom: 8,
+      textAlign: 'right',
+      fontFamily: 'Tajawal_700Bold',
+    },
+    subtitle: {
+      fontSize: 16,
+      color: Colors.mutedText,
+      textAlign: 'right',
+      fontFamily: 'Tajawal_500Medium',
+    },
+    form: {
+      gap: 20,
+    },
+    inputContainer: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      backgroundColor: Colors.surface,
+      borderRadius: 12,
+      paddingHorizontal: 16,
+      borderWidth: 1,
+      borderColor: Colors.primary + '20',
+      marginBottom: 12,
+    },
+    input: {
+      flex: 1,
+      height: 50,
+      color: Colors.text,
+      fontSize: 16,
+      fontFamily: 'Tajawal_500Medium',
+      paddingHorizontal: 12,
+      textAlign: 'right',
+    },
+    textArea: {
+      flex: 1,
+      height: 120,
+      color: Colors.text,
+      fontSize: 16,
+      fontFamily: 'Tajawal_500Medium',
+      paddingHorizontal: 12,
+      textAlign: 'right',
+      textAlignVertical: 'top',
+    },
+    sectionContainer: {
+      flex: 1,
+      padding: 16,
+    },
+    sectionContent: {
+      backgroundColor: Colors.background,
+      padding: 16,
+      borderRadius: 16,
+      shadowColor: '#000',
+      shadowOffset: {
+        width: 0,
+        height: 2,
+      },
+      shadowOpacity: 0.1,
+      shadowRadius: 3,
+      elevation: 3,
+    },
+    sectionTitle: {
+      fontSize: 20,
+      color: Colors.primary,
+      marginBottom: 16,
+      textAlign: 'right',
+      fontFamily: 'Tajawal_700Bold',
+    },
+    switchContainer: {
+      flexDirection: 'row-reverse',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      marginBottom: 12,
+    },
+    switchLabel: {
+      fontSize: 16,
+      color: Colors.text,
+      fontFamily: 'Tajawal_500Medium',
+    },
+    navigationButtons: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      padding: 16,
+      backgroundColor: Colors.surface,
+      marginBottom:50
+    },
+    button: {
+      paddingVertical: 12,
+      paddingHorizontal: 24,
+      borderRadius: 12,
+      backgroundColor: Colors.primary,
+    },
+    buttonText: {
+      color: Colors.background,
+      fontSize: 16,
+      fontFamily: 'Tajawal_700Bold',
+    },
+    outlineButton: {
+      paddingVertical: 12,
+      paddingHorizontal: 24,
+      borderRadius: 12,
+      borderWidth: 1,
       borderColor: Colors.primary,
-      bg: Colors.background,
-      _android: {
-        borderColor: Colors.primary,
-      },
-      _ios: {
-        borderColor: Colors.primary,
-      },
     },
-    _hover: {
-      borderColor: Colors.border,
-      bg: Colors.background,
+    outlineButtonText: {
+      color: Colors.primary,
+      fontSize: 16,
+      fontFamily: 'Tajawal_700Bold',
     },
-    _input: {
-      selectionColor: Colors.primary,
+    progressContainer: {
+      padding: 16,
+      marginTop: 16,
     },
-  };
+    progressText: {
+      fontSize: 12,
+      color: Colors.mutedText,
+      textAlign: 'right',
+      marginTop: 4,
+      fontFamily: 'Tajawal_500Medium',
+    },
+    modalContainer: {
+      flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
+      backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    },
+    modalContent: {
+      width: '80%',
+      backgroundColor: Colors.background,
+      borderRadius: 16,
+      overflow: 'hidden',
+    },
+    modalHeader: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      padding: 16,
+      borderBottomWidth: 1,
+      borderBottomColor: Colors.border,
+    },
+    modalTitle: {
+      fontSize: 18,
+      color: Colors.text,
+      fontFamily: 'Tajawal_700Bold',
+    },
+    modalBody: {
+      maxHeight: 400,
+    },
+    yearList: {
+      padding: 16,
+    },
+    yearItem: {
+      padding: 12,
+      borderRadius: 8,
+      marginBottom: 8,
+    },
+    selectedYearItem: {
+      backgroundColor: Colors.primary + '20',
+    },
+    yearText: {
+      fontSize: 16,
+      color: Colors.text,
+      fontFamily: 'Tajawal_500Medium',
+      textAlign: 'center',
+    },
+    selectedYearText: {
+      color: Colors.primary,
+      fontFamily: 'Tajawal_700Bold',
+    },
+  });
 
   const renderProgressBar = () => {
     const totalSteps = 6;
     const progress = Math.floor(((currentIndex + 1) / totalSteps) * 100);
     
     return (
-      <Box px={4} py={4} mt={4}>
-        <Progress value={progress} colorScheme={Colors.primary} size="sm" bg={Colors.border} />
-        <Text fontSize="xs" color={Colors.mutedText} textAlign="right" mt={1}>
+      <View style={styles.progressContainer}>
+        <Text style={styles.progressText}>
           {currentIndex + 1} من {totalSteps}
         </Text>
-      </Box>
-    );
-  };
-
-  const renderNavigationButtons = () => {
-    return (
-      <HStack space={4} justifyContent="space-between" px={4} py={4} bg={Colors.surface}>
-        <Button
-          variant="outline"
-          leftIcon={<Icon as={AntDesign} name="arrowright" size="sm" color={Colors.primary} />}
-          onPress={handlePrev}
-          isDisabled={currentIndex === 0}
-          borderColor={Colors.primary}
-          _text={{ color: Colors.primary }}
-          _pressed={{ bg: Colors.surface }}
-        >
-          السابق
-        </Button>
-        {currentIndex === 5 ? (
-          <Button
-            bg={Colors.primary}
-            _pressed={{ bg: Colors.accent }}
-            onPress={handleSubmit}
-            _text={{ color: Colors.background }}
-          >
-            تسجيل
-          </Button>
-        ) : (
-          <Button
-            variant="outline"
-            rightIcon={<Icon as={AntDesign} name="arrowleft" size="sm" color={Colors.primary} />}
-            onPress={handleNext}
-            borderColor={Colors.primary}
-            _text={{ color: Colors.primary }}
-            _pressed={{ bg: Colors.surface }}
-          >
-            التالي
-          </Button>
-        )}
-      </HStack>
+      </View>
     );
   };
 
@@ -309,364 +407,320 @@ const RegisterScreen = () => {
       {
         title: "معلومات الحساب",
         content: (
-          <FormControl>
-            <Input
-              placeholder="الاسم الكامل"
-              onChangeText={(v) => handleChange('fullName', v)}
-              {...inputStyle}
-              mb={3}
-              textAlign="right"
-              size="lg"
-            />
-            <Input
-              placeholder="البريد الإلكتروني"
-              onChangeText={(v) => handleChange('email', v)}
-              {...inputStyle}
-              mb={3}
-              textAlign="right"
-              size="lg"
-            />
-            <Input
-              placeholder="رقم الهاتف"
-              onChangeText={(v) => handleChange('phone', v)}
-              {...inputStyle}
-              mb={3}
-              textAlign="right"
-              size="lg"
-            />
-            <Input
-              placeholder="اسم المستخدم"
-              onChangeText={(v) => handleChange('username', v)}
-              {...inputStyle}
-              mb={3}
-              textAlign="right"
-              size="lg"
-            />
-            <Input
-              placeholder="كلمة المرور"
-              type="password"
-              onChangeText={(v) => handleChange('password', v)}
-              {...inputStyle}
-              mb={3}
-              textAlign="right"
-              size="lg"
-            />
-            <Input
-              placeholder="تأكيد كلمة المرور"
-              type="password"
-              onChangeText={(v) => handleChange('confirmPassword', v)}
-              {...inputStyle}
-              textAlign="right"
-              size="lg"
-            />
-          </FormControl>
+          <View style={styles.form}>
+            <View style={styles.inputContainer}>
+              <MaterialIcons name="person" size={24} color={Colors.mutedText} />
+              <TextInput
+                style={styles.input}
+                placeholder="الاسم الكامل"
+                placeholderTextColor={Colors.mutedText}
+                value={formData.fullName}
+                onChangeText={(v) => handleChange('fullName', v)}
+              />
+            </View>
+            <View style={styles.inputContainer}>
+              <MaterialIcons name="email" size={24} color={Colors.mutedText} />
+              <TextInput
+                style={styles.input}
+                placeholder="البريد الإلكتروني"
+                placeholderTextColor={Colors.mutedText}
+                value={formData.email}
+                onChangeText={(v) => handleChange('email', v)}
+                keyboardType="email-address"
+                autoCapitalize="none"
+              />
+            </View>
+            <View style={styles.inputContainer}>
+              <MaterialIcons name="phone" size={24} color={Colors.mutedText} />
+              <TextInput
+                style={styles.input}
+                placeholder="رقم الهاتف"
+                placeholderTextColor={Colors.mutedText}
+                value={formData.phone}
+                onChangeText={(v) => handleChange('phone', v)}
+                keyboardType="phone-pad"
+              />
+            </View>
+            <View style={styles.inputContainer}>
+              <MaterialIcons name="person-outline" size={24} color={Colors.mutedText} />
+              <TextInput
+                style={styles.input}
+                placeholder="اسم المستخدم"
+                placeholderTextColor={Colors.mutedText}
+                value={formData.username}
+                onChangeText={(v) => handleChange('username', v)}
+                autoCapitalize="none"
+              />
+            </View>
+            <View style={styles.inputContainer}>
+              <MaterialIcons name="lock" size={24} color={Colors.mutedText} />
+              <TextInput
+                style={styles.input}
+                placeholder="كلمة المرور"
+                placeholderTextColor={Colors.mutedText}
+                value={formData.password}
+                onChangeText={(v) => handleChange('password', v)}
+                secureTextEntry
+              />
+            </View>
+            <View style={styles.inputContainer}>
+              <MaterialIcons name="lock-outline" size={24} color={Colors.mutedText} />
+              <TextInput
+                style={styles.input}
+                placeholder="تأكيد كلمة المرور"
+                placeholderTextColor={Colors.mutedText}
+                value={formData.confirmPassword}
+                onChangeText={(v) => handleChange('confirmPassword', v)}
+                secureTextEntry
+              />
+            </View>
+          </View>
         )
       },
       {
         title: "المعلومات الشخصية",
         content: (
-          <FormControl>
-            <Pressable onPress={() => setShowDatePicker(true)}>
-              <Input
-                value={format(formData.dob, 'dd/MM/yyyy')}
-                isReadOnly
-                rightElement={
-                  <Icon
-                    as={AntDesign}
-                    name="calendar"
-                    size={5}
-                    mr={2}
-                    color="gray.400"
-                  />
-                }
-              />
-            </Pressable>
+          <View style={styles.form}>
+            <TouchableOpacity onPress={() => setShowDatePicker(true)}>
+              <View style={styles.inputContainer}>
+                <MaterialIcons name="date-range" size={24} color={Colors.mutedText} />
+                <TextInput
+                  style={styles.input}
+                  value={format(formData.dob, 'dd/MM/yyyy')}
+                  readOnly
+                />
+              </View>
+            </TouchableOpacity>
             {renderDatePicker()}
-            <Input
-              placeholder="العمر"
-              value={formData.age}
-              isReadOnly
-              bg="gray.100"
-              borderRadius="lg"
-              mb={3}
-              textAlign="right"
-              _focus={{
-                borderColor: 'transparent',
-                backgroundColor: 'gray.100',
-              }}
-            />
-            <Select
-              selectedValue={formData.maritalStatus}
-              placeholder="الحالة الاجتماعية"
-              onValueChange={(v) => handleChange('maritalStatus', v)}
-              bg="white"
-              borderRadius="lg"
-              mb={3}
-              textAlign="right"
-            >
-              <Select.Item label="أعزب" value="single" />
-              <Select.Item label="متزوج" value="married" />
-              <Select.Item label="مطلق" value="divorced" />
-              <Select.Item label="أرمل" value="widowed" />
-            </Select>
-            {formData.maritalStatus !== 'single' && (
-              <Input
-                placeholder="عدد الأطفال"
-                value={formData.children}
-                onChangeText={(v) => handleChange('children', v)}
-                {...inputStyle}
-                mb={3}
-                textAlign="right"
+            <View style={styles.inputContainer}>
+              <MaterialIcons name="person" size={24} color={Colors.mutedText} />
+              <TextInput
+                style={styles.input}
+                placeholder="العمر"
+                value={formData.age}
+                readOnly
+                editable={false}
               />
+            </View>
+            <View style={styles.inputContainer}>
+              <MaterialIcons name="group" size={24} color={Colors.mutedText} />
+              <TextInput
+                style={styles.input}
+                placeholder="الحالة الاجتماعية"
+                value={formData.maritalStatus}
+                onChangeText={(v) => handleChange('maritalStatus', v)}
+              />
+            </View>
+            {formData.maritalStatus !== 'single' && (
+              <View style={styles.inputContainer}>
+                <MaterialIcons name="child-care" size={24} color={Colors.mutedText} />
+                <TextInput
+                  style={styles.input}
+                  placeholder="عدد الأطفال"
+                  value={formData.children}
+                  onChangeText={(v) => handleChange('children', v)}
+                />
+              </View>
             )}
-            <Select
-              selectedValue={formData.nationality}
-              placeholder="الجنسية"
-              onValueChange={(v) => handleChange('nationality', v)}
-              bg="white"
-              borderRadius="lg"
-              mb={3}
-              textAlign="right"
-            >
-              <Select.Item label="سعودي" value="saudi" />
-              <Select.Item label="مصري" value="egyptian" />
-              <Select.Item label="إماراتي" value="emirati" />
-            </Select>
-            <Select
-              selectedValue={formData.country}
-              placeholder="البلد"
-              onValueChange={(v) => handleChange('country', v)}
-              bg="white"
-              borderRadius="lg"
-              mb={3}
-              textAlign="right"
-            >
-              <Select.Item label="السعودية" value="saudi_arabia" />
-              <Select.Item label="مصر" value="egypt" />
-              <Select.Item label="الإمارات" value="uae" />
-            </Select>
-            <Select
-              selectedValue={formData.city}
-              placeholder="المدينة"
-              onValueChange={(v) => handleChange('city', v)}
-              bg="white"
-              borderRadius="lg"
-              textAlign="right"
-            >
-              <Select.Item label="الرياض" value="riyadh" />
-              <Select.Item label="جدة" value="jeddah" />
-              <Select.Item label="القاهرة" value="cairo" />
-            </Select>
-          </FormControl>
+            <View style={styles.inputContainer}>
+              <MaterialIcons name="flag" size={24} color={Colors.mutedText} />
+              <TextInput
+                style={styles.input}
+                placeholder="الجنسية"
+                value={formData.nationality}
+                onChangeText={(v) => handleChange('nationality', v)}
+              />
+            </View>
+            <View style={styles.inputContainer}>
+              <MaterialIcons name="location-on" size={24} color={Colors.mutedText} />
+              <TextInput
+                style={styles.input}
+                placeholder="البلد"
+                value={formData.country}
+                onChangeText={(v) => handleChange('country', v)}
+              />
+            </View>
+            <View style={styles.inputContainer}>
+              <MaterialIcons name="location-on" size={24} color={Colors.mutedText} />
+              <TextInput
+                style={styles.input}
+                placeholder="المدينة"
+                value={formData.city}
+                onChangeText={(v) => handleChange('city', v)}
+              />
+            </View>
+          </View>
         )
       },
       {
         title: "الصفات الجسدية",
         content: (
-          <FormControl>
-            <Select
-              selectedValue={formData.height}
-              placeholder="الطول (سم)"
-              onValueChange={(v) => handleChange('height', v)}
-              bg="white"
-              borderRadius="lg"
-              mb={3}
-              textAlign="right"
-            >
-              <Select.Item label="150 سم" value="150" />
-              <Select.Item label="160 سم" value="160" />
-              <Select.Item label="170 سم" value="170" />
-              <Select.Item label="180 سم" value="180" />
-            </Select>
-            <Input
-              placeholder="الوزن (كجم)"
-              value={formData.weight}
-              onChangeText={(v) => handleChange('weight', v)}
-              {...inputStyle}
-              mb={3}
-              textAlign="right"
-            />
-            <Select
-              selectedValue={formData.skinTone}
-              placeholder="لون البشرة"
-              onValueChange={(v) => handleChange('skinTone', v)}
-              bg="white"
-              borderRadius="lg"
-              mb={3}
-              textAlign="right"
-            >
-              <Select.Item label="فاتح جدًا" value="very_fair" />
-              <Select.Item label="فاتح" value="fair" />
-              <Select.Item label="قمحي" value="wheatish" />
-              <Select.Item label="داكن" value="dark" />
-            </Select>
-            <Select
-              selectedValue={formData.bodyType}
-              placeholder="نوع الجسم"
-              onValueChange={(v) => handleChange('bodyType', v)}
-              bg="white"
-              borderRadius="lg"
-              textAlign="right"
-            >
-              <Select.Item label="نحيف" value="slim" />
-              <Select.Item label="رياضي" value="athletic" />
-              <Select.Item label="متوسط" value="average" />
-              <Select.Item label="ثقيل" value="heavy" />
-            </Select>
-          </FormControl>
+          <View style={styles.form}>
+            <View style={styles.inputContainer}>
+              <MaterialIcons name="height" size={24} color={Colors.mutedText} />
+              <TextInput
+                style={styles.input}
+                placeholder="الطول (سم)"
+                value={formData.height}
+                onChangeText={(v) => handleChange('height', v)}
+              />
+            </View>
+            <View style={styles.inputContainer}>
+              <MaterialIcons name="monitor-weight" size={24} color={Colors.mutedText} />
+              <TextInput
+                style={styles.input}
+                placeholder="الوزن (كجم)"
+                value={formData.weight}
+                onChangeText={(v) => handleChange('weight', v)}
+              />
+            </View>
+            <View style={styles.inputContainer}>
+              <MaterialIcons name="face" size={24} color={Colors.mutedText} />
+              <TextInput
+                style={styles.input}
+                placeholder="لون البشرة"
+                value={formData.skinTone}
+                onChangeText={(v) => handleChange('skinTone', v)}
+              />
+            </View>
+            <View style={styles.inputContainer}>
+              <MaterialIcons name="fitness-center" size={24} color={Colors.mutedText} />
+              <TextInput
+                style={styles.input}
+                placeholder="نوع الجسم"
+                value={formData.bodyType}
+                onChangeText={(v) => handleChange('bodyType', v)}
+              />
+            </View>
+          </View>
         )
       },
       {
         title: "الدين ونمط الحياة",
         content: (
-          <FormControl>
-            <Select
-              selectedValue={formData.religion}
-              placeholder="الديانة"
-              onValueChange={(v) => handleChange('religion', v)}
-              bg="white"
-              borderRadius="lg"
-              mb={3}
-              textAlign="right"
-            >
-              <Select.Item label="الإسلام" value="islam" />
-              <Select.Item label="المسيحية" value="christianity" />
-            </Select>
-            <HStack justifyContent="space-between" alignItems="center" mb={3} flexDirection={'row-reverse'}>
-              <Text>هل تصلي بانتظام؟</Text>
-              <Switch
-                isChecked={formData.pray}
-                onToggle={(v) => handleChange('pray', v)}
-                onTrackColor={Colors.primary}
+          <View style={styles.form}>
+            <View style={styles.inputContainer}>
+              <MaterialIcons name="group" size={24} color={Colors.mutedText} />
+              <TextInput
+                style={styles.input}
+                placeholder="الديانة"
+                value={formData.religion}
+                onChangeText={(v) => handleChange('religion', v)}
               />
-            </HStack>
-            <HStack justifyContent="space-between" alignItems="center" mb={3} flexDirection={'row-reverse'}>
-              <Text>هل تدخن؟</Text>
+            </View>
+            <View style={styles.switchContainer}>
+              <Text style={styles.switchLabel}>هل تصلي بانتظام؟</Text>
               <Switch
-                isChecked={formData.smoker}
-                onToggle={(v) => handleChange('smoker', v)}
-                onTrackColor={Colors.primary}
+                value={formData.pray}
+                onValueChange={(v) => handleChange('pray', v)}
+                trackColor={{ false: Colors.border, true: Colors.primary }}
               />
-            </HStack>
-            <HStack justifyContent="space-between" alignItems="center" mb={3} flexDirection={'row-reverse'}>
-              <Text>هل تتناول الكحول؟</Text>
+            </View>
+            <View style={styles.switchContainer}>
+              <Text style={styles.switchLabel}>هل تدخن؟</Text>
               <Switch
-                isChecked={formData.alcohol}
-                onToggle={(v) => handleChange('alcohol', v)}
-                onTrackColor={Colors.primary}
+                value={formData.smoker}
+                onValueChange={(v) => handleChange('smoker', v)}
+                trackColor={{ false: Colors.border, true: Colors.primary }}
               />
-            </HStack>
+            </View>
+            <View style={styles.switchContainer}>
+              <Text style={styles.switchLabel}>هل تتناول الكحول؟</Text>
+              <Switch
+                value={formData.alcohol}
+                onValueChange={(v) => handleChange('alcohol', v)}
+                trackColor={{ false: Colors.border, true: Colors.primary }}
+              />
+            </View>
             {isHusband && (
-              <HStack justifyContent="space-between" alignItems="center" mb={3} flexDirection={'row-reverse'}>
-                <Text>هل لديك لحية؟</Text>
+              <View style={styles.switchContainer}>
+                <Text style={styles.switchLabel}>هل لديك لحية؟</Text>
                 <Switch
-                  isChecked={formData.beard}
-                  onToggle={(v) => handleChange('beard', v)}
-                  onTrackColor={Colors.primary}
+                  value={formData.beard}
+                  onValueChange={(v) => handleChange('beard', v)}
+                  trackColor={{ false: Colors.border, true: Colors.primary }}
                 />
-              </HStack>
+              </View>
             )}
             {isWife && (
-              <HStack justifyContent="space-between" alignItems="center" flexDirection={'row-reverse'}>
-                <Text>هل ترتدين الحجاب؟</Text>
+              <View style={styles.switchContainer}>
+                <Text style={styles.switchLabel}>هل ترتدين الحجاب؟</Text>
                 <Switch
-                  isChecked={formData.hijab}
-                  onToggle={(v) => handleChange('hijab', v)}
-                  onTrackColor={Colors.primary}
+                  value={formData.hijab}
+                  onValueChange={(v) => handleChange('hijab', v)}
+                  trackColor={{ false: Colors.border, true: Colors.primary }}
                 />
-              </HStack>
+              </View>
             )}
-          </FormControl>
+          </View>
         )
       },
       {
         title: "الوظيفة والدخل",
         content: (
-          <FormControl>
-            <Select
-              selectedValue={formData.employment}
-              placeholder="الحالة الوظيفية"
-              onValueChange={(v) => handleChange('employment', v)}
-              bg="white"
-              borderRadius="lg"
-              mb={3}
-              textAlign="right"
-            >
-              <Select.Item label="موظف" value="employed" />
-              <Select.Item label="عمل حر" value="self_employed" />
-              <Select.Item label="غير موظف" value="unemployed" />
-              <Select.Item label="طالب" value="student" />
-            </Select>
-            <Input
-              placeholder="الوظيفة"
-              value={formData.job}
-              onChangeText={(v) => handleChange('job', v)}
-              {...inputStyle}
-              mb={3}
-              textAlign="right"
-            />
-            <Input
-              placeholder="الدخل الشهري"
-              value={formData.income}
-              onChangeText={(v) => handleChange('income', v)}
-              {...inputStyle}
-              mb={3}
-              textAlign="right"
-            />
-            <Select
-              selectedValue={formData.education}
-              placeholder="المستوى التعليمي"
-              onValueChange={(v) => handleChange('education', v)}
-              bg="white"
-              borderRadius="lg"
-              textAlign="right"
-            >
-              <Select.Item label="ثانوية" value="high_school" />
-              <Select.Item label="بكالوريوس" value="bachelor" />
-              <Select.Item label="ماجستير" value="master" />
-              <Select.Item label="دكتوراه" value="phd" />
-            </Select>
-          </FormControl>
+          <View style={styles.form}>
+            <View style={styles.inputContainer}>
+              <MaterialIcons name="work" size={24} color={Colors.mutedText} />
+              <TextInput
+                style={styles.input}
+                placeholder="الحالة الوظيفية"
+                value={formData.employment}
+                onChangeText={(v) => handleChange('employment', v)}
+              />
+            </View>
+            <View style={styles.inputContainer}>
+              <MaterialIcons name="work" size={24} color={Colors.mutedText} />
+              <TextInput
+                style={styles.input}
+                placeholder="الوظيفة"
+                value={formData.job}
+                onChangeText={(v) => handleChange('job', v)}
+              />
+            </View>
+            <View style={styles.inputContainer}>
+              <MaterialIcons name="attach-money" size={24} color={Colors.mutedText} />
+              <TextInput
+                style={styles.input}
+                placeholder="الدخل الشهري"
+                value={formData.income}
+                onChangeText={(v) => handleChange('income', v)}
+              />
+            </View>
+            <View style={styles.inputContainer}>
+              <MaterialIcons name="school" size={24} color={Colors.mutedText} />
+              <TextInput
+                style={styles.input}
+                placeholder="المستوى التعليمي"
+                value={formData.education}
+                onChangeText={(v) => handleChange('education', v)}
+              />
+            </View>
+          </View>
         )
       },
       {
         title: "نبذة عنك",
         content: (
-          <FormControl>
-            <TextArea
-              height={24}
+          <View style={styles.form}>
+            <TextInput
+              style={styles.textArea}
               placeholder="صف نفسك"
               value={formData.describeSelf}
               onChangeText={(v) => handleChange('describeSelf', v)}
-              bg="white"
-              borderRadius="lg"
-              mb={3}
-              textAlign="right"
-              autoCompleteType="off"
-              onTextInput={() => {}}
-              tvParallaxProperties={{}}
-              _focus={{
-                borderColor: Colors.primary,
-                backgroundColor: 'white',
-              }}
+              multiline
+              numberOfLines={4}
+              textAlignVertical="top"
             />
-            <TextArea
-              height={24}
+            <TextInput
+              style={styles.textArea}
               placeholder="صف شريك حياتك المثالي"
               value={formData.describePartner}
               onChangeText={(v) => handleChange('describePartner', v)}
-              bg="white"
-              borderRadius="lg"
-              textAlign="right"
-              autoCompleteType="off"
-              onTextInput={() => {}}
-              tvParallaxProperties={{}}
-              _focus={{
-                borderColor: Colors.primary,
-                backgroundColor: 'white',
-              }}
+              multiline
+              numberOfLines={4}
+              textAlignVertical="top"
             />
-          </FormControl>
+          </View>
         )
       },
     ];
@@ -675,63 +729,104 @@ const RegisterScreen = () => {
     if (!section) return null;
 
     return (
-      <Box flex={1} px={4} py={4}>
-        <Box bg={Colors.background} p={4} borderRadius="xl" shadow={2}>
-          <Text bold fontSize="lg" color={Colors.primary} mb={4} textAlign={'right'}>
-            {section.title}
-          </Text>
+      <View style={styles.sectionContainer}>
+        <View style={styles.sectionContent}>
+          <Text style={styles.sectionTitle}>{section.title}</Text>
           {section.content}
-        </Box>
-      </Box>
+        </View>
+      </View>
     );
   };
 
   const renderDatePicker = () => {
     return (
-      <Modal isOpen={showDatePicker} onClose={() => setShowDatePicker(false)}>
-        <Modal.Content>
-          <Modal.Header>Select Date of Birth</Modal.Header>
-          <Modal.Body>
-            <ScrollView>
-              <VStack space={4}>
+      <Modal
+        visible={showDatePicker}
+        transparent
+        animationType="slide"
+        onRequestClose={() => setShowDatePicker(false)}
+      >
+        <View style={styles.modalContainer}>
+          <View style={styles.modalContent}>
+            <View style={styles.modalHeader}>
+              <Text style={styles.modalTitle}>اختر تاريخ الميلاد</Text>
+              <TouchableOpacity onPress={() => setShowDatePicker(false)}>
+                <MaterialIcons name="close" size={24} color={Colors.text} />
+              </TouchableOpacity>
+            </View>
+            <ScrollView style={styles.modalBody}>
+              <View style={styles.yearList}>
                 {Array.from({ length: 100 }, (_, i) => {
                   const year = new Date().getFullYear() - i;
                   return (
-                    <Pressable
+                    <TouchableOpacity
                       key={year}
                       onPress={() => {
                         const newDate = new Date(formData.dob);
                         newDate.setFullYear(year);
                         handleDateChange(newDate);
                       }}
-                      p={2}
-                      bg={formData.dob.getFullYear() === year ? "primary.100" : "white"}
+                      style={[
+                        styles.yearItem,
+                        formData.dob.getFullYear() === year && styles.selectedYearItem
+                      ]}
                     >
-                      <Text>{year}</Text>
-                    </Pressable>
+                      <Text style={[
+                        styles.yearText,
+                        formData.dob.getFullYear() === year && styles.selectedYearText
+                      ]}>
+                        {year}
+                      </Text>
+                    </TouchableOpacity>
                   );
                 })}
-              </VStack>
+              </View>
             </ScrollView>
-          </Modal.Body>
-        </Modal.Content>
+          </View>
+        </View>
       </Modal>
     );
   };
 
   return (
-    <LinearGradient
-      colors={[Colors.background, Colors.surface]}
-      start={{ x: 0.1, y: 0 }}
-      end={{ x: 1, y: 1 }}
-      style={{ flex: 1 }}
-    >
-      {renderProgressBar()}
-      <Box flex={1}>
-        {renderSection(currentIndex)}
-      </Box>
-      {renderNavigationButtons()}
-    </LinearGradient>
+
+      <LinearGradient
+        colors={[Colors.background, Colors.surface]}
+        start={{ x: 0.1, y: 0 }}
+        end={{ x: 1, y: 1 }}
+        style={styles.gradient}
+      >
+        <ScrollView contentContainerStyle={styles.scrollContent}>
+          {renderProgressBar()}
+          {renderSection(currentIndex)}
+        </ScrollView>
+        <View style={styles.navigationButtons}>
+          {currentIndex > 0 && (
+            <TouchableOpacity
+              style={styles.outlineButton}
+              onPress={handlePrev}
+            >
+              <Text style={styles.outlineButtonText}>السابق</Text>
+            </TouchableOpacity>
+          )}
+          {currentIndex < 5 ? (
+            <TouchableOpacity
+              style={styles.button}
+              onPress={handleNext}
+            >
+              <Text style={styles.buttonText}>التالي</Text>
+            </TouchableOpacity>
+          ) : (
+            <TouchableOpacity
+              style={styles.button}
+              onPress={handleSubmit}
+            >
+              <Text style={styles.buttonText}>تسجيل</Text>
+            </TouchableOpacity>
+          )}
+        </View>
+      </LinearGradient>
+
   );
 };
 

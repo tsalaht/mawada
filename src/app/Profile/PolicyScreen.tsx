@@ -7,6 +7,7 @@ import {
   View,
   Icon,
   HStack,
+  Pressable,
 } from 'native-base';
 import { MaterialIcons } from '@expo/vector-icons';
 import Colors from '../../../Views/Colors/Color';
@@ -15,14 +16,31 @@ import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { ProfileStackParamList } from '../../../navigation/AppNavigator';
 
+type PolicyScreenNavigationProp = StackNavigationProp<ProfileStackParamList, 'Policy'>;
+
 const PolicyScreen: React.FC = () => {
+  const navigation = useNavigation<PolicyScreenNavigationProp>();
+
   return (
-    <View style={{ flex: 1, backgroundColor: Colors.background ,paddingBottom: 50}}>
+    <View style={{ flex: 1, backgroundColor: Colors.background, paddingBottom: 50 }}>
       <LinearGradient
         colors={[Colors.primary + '20', Colors.background, Colors.background]}
         style={{ flex: 1 }}
       >
         <Box safeAreaTop />
+        <Box flexDirection="row" justifyContent="space-between" alignItems="center" px={4} mt={-4}>
+          <Pressable onPress={() => navigation.goBack()}>
+            <Icon
+              as={MaterialIcons}
+              name="arrow-back"
+              size="lg"
+              color={Colors.primary}
+            />
+          </Pressable>
+          <Text bold fontSize="xl" color={Colors.text} textAlign="right">
+            سياسة الخصوصية
+          </Text>
+        </Box>
         <ScrollView
           px={4}
           pt={4}
@@ -30,7 +48,6 @@ const PolicyScreen: React.FC = () => {
           showsVerticalScrollIndicator={false}
         >
           <VStack space={6}>
-            {/* Header */}
             <Box
               bg="white"
               p={6}
@@ -60,8 +77,6 @@ const PolicyScreen: React.FC = () => {
                 />
               </HStack>
             </Box>
-
-            {/* Content */}
             <VStack space={4}>
               <Box
                 bg="white"
@@ -84,7 +99,6 @@ const PolicyScreen: React.FC = () => {
                   </Text>
                 </VStack>
               </Box>
-
               <Box
                 bg="white"
                 p={6}
@@ -106,7 +120,6 @@ const PolicyScreen: React.FC = () => {
                   </Text>
                 </VStack>
               </Box>
-
               <Box
                 bg="white"
                 p={6}
@@ -128,7 +141,6 @@ const PolicyScreen: React.FC = () => {
                   </Text>
                 </VStack>
               </Box>
-
               <Box
                 bg="white"
                 p={6}
@@ -142,7 +154,7 @@ const PolicyScreen: React.FC = () => {
                   marginBottom: 100,
                 }}
               >
-                <VStack space={4} >
+                <VStack space={4}>
                   <Text bold fontSize="lg" color={Colors.text} textAlign="right">
                     حقوقك
                   </Text>
@@ -159,4 +171,4 @@ const PolicyScreen: React.FC = () => {
   );
 };
 
-export default PolicyScreen; 
+export default PolicyScreen;

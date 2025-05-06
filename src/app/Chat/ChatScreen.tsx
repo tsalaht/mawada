@@ -105,7 +105,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: Colors.background,
-    paddingTop:40
   },
   gradient: {
     flex: 1,

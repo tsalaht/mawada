@@ -16,6 +16,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { LinearGradient } from 'expo-linear-gradient';
 import { MaterialIcons } from '@expo/vector-icons';
 import * as ExpoImagePicker from 'expo-image-picker';
+import { useNavigation } from '@react-navigation/native';
 import Colors from '../../../Views/Colors/Color';
 
 interface Message {
@@ -28,6 +29,7 @@ interface Message {
 }
 
 const ChatRoom: React.FC = () => {
+  const navigation = useNavigation();
   const [messages, setMessages] = useState<Message[]>([
     {
       id: '1',
@@ -170,29 +172,38 @@ const ChatRoom: React.FC = () => {
   );
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={styles.container} edges={['bottom']}>
       <LinearGradient
         colors={[Colors.primary + '20', Colors.background, Colors.background]}
         style={styles.gradient}
       >
+        <View style={styles.header}>
+          <TouchableOpacity
+            style={styles.backButton}
+            onPress={() => navigation.goBack()}
+          >
+            <MaterialIcons name="arrow-back" size={24} color={Colors.primary} />
+          </TouchableOpacity>
+        </View>
         <KeyboardAvoidingView
           behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
           style={styles.keyboardView}
           keyboardVerticalOffset={Platform.OS === 'ios' ? 90 : 0}
         >
-          <View style={styles.messagesContainer}>
-            <FlatList
-              ref={flatListRef}
-              data={messages}
-              renderItem={renderMessage}
-              keyExtractor={(item) => item.id}
-              onContentSizeChange={() =>
-                flatListRef.current?.scrollToEnd({ animated: true })
-              }
-              onLayout={() => flatListRef.current?.scrollToEnd({ animated: true })}
-              contentContainerStyle={styles.messagesContent}
-            />
-          </View>
+          <FlatList
+            ref={flatListRef}
+            data={messages}
+            renderItem={renderMessage}
+            keyExtractor={(item) => item.id}
+            onContentSizeChange={() =>
+              flatListRef.current?.scrollToEnd({ animated: true })
+            }
+            onLayout={() => flatListRef.current?.scrollToEnd({ animated: true })}
+            contentContainerStyle={styles.messagesContent}
+            keyboardShouldPersistTaps="handled"
+            keyboardDismissMode="none"
+            style={styles.messagesContainer}
+          />
           <View style={styles.inputContainer}>
             <TouchableOpacity
               style={[styles.attachmentButton, isImageLoading && styles.disabledButton]}
@@ -228,21 +239,35 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: Colors.background,
-    paddingBottom: 40,
+    paddingBottom:60
   },
   gradient: {
     flex: 1,
   },
+  header: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    borderBottomColor: Colors.primary + '20',
+    position: 'absolute',
+    top: 0,
+    width: '100%',
+    padding: 8,
+    zIndex: 2,
+    backgroundColor: Colors.background,
+  },
+  backButton: {
+    padding: 8,
+  },
   keyboardView: {
     flex: 1,
+    marginTop: 48,
   },
   messagesContainer: {
     flex: 1,
-    marginBottom: 70,
   },
   messagesContent: {
-    paddingBottom: 60,
-    paddingTop: 16,
+    paddingBottom: 16,
+    paddingTop: 8,
   },
   messageContainer: {
     maxWidth: '80%',
@@ -290,11 +315,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderTopWidth: 1,
     borderTopColor: Colors.primary + '20',
-    position: 'absolute',
-    bottom: 0,
-    left: 0,
-    right: 0,
-    marginBottom: 70,
+    position: 'relative',
+    zIndex: 1,
   },
   input: {
     flex: 1,
@@ -309,9 +331,9 @@ const styles = StyleSheet.create({
   },
   attachmentButton: {
     padding: 8,
-    zIndex: 1, // Ensure button is above other elements
+    zIndex: 1,
   },
-  disabledButton : {
+  disabledButton: {
     opacity: 0.5,
   },
   sendButton: {

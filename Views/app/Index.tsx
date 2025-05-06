@@ -13,10 +13,13 @@ import ProfileScreen from "../../src/app/Profile/ProfileScreen";
 import Colors from "../Colors/Color";
 import Chat from "app/Chat/Index";
 import Profile from "app/Profile/Index";
+import Header from "../Components/Header";
+
 interface Screen {
   name: string;
   component: React.FC<any>;
   icon: (props: { focused: boolean; color: string; size: number }) => React.ReactNode;
+  options?: BottomTabNavigationOptions;
 }
 
 const Tab = createBottomTabNavigator();
@@ -60,113 +63,14 @@ const ProtectedScreens: React.FC = () => {
 
   const screens: Screen[] = [
     {
-      name: "الرئيسية",
-      component: Home,
-      icon: ({ focused, color, size }) => (
-        <View style={{ 
-          flexDirection: 'row', 
-          alignItems: 'center', 
-          justifyContent: 'center',
-          width: focused ? 100 : 40,
-          height: 40,
-          backgroundColor: focused ? Colors.primary : 'transparent',
-          paddingHorizontal: focused ? 4 : 0,
-          paddingVertical: 8,
-          borderRadius: 16,
-        }}>
-          <Ionicons name="home" size={22} color={focused ? Colors.background : Colors.mutedText} />
-          {focused && (
-            <Text 
-              style={{
-                color: Colors.background,
-                fontWeight: "600",
-                fontSize: 12,
-                marginLeft: 4,
-                textAlign: 'right',
-                flexShrink: 1,
-              }}
-              numberOfLines={1}
-            >
-              الرئيسية
-            </Text>
-          )}
-        </View>
-      ),
-    },
-    {
-      name: "الإعجابات",
-      component: LikesScreen,
-      icon: ({ focused, color, size }) => (
-        <View style={{ 
-          flexDirection: 'row', 
-          alignItems: 'center', 
-          justifyContent: 'center',
-          width: focused ? 100 : 40,
-          height: 40,
-          backgroundColor: focused ? Colors.primary : 'transparent',
-          paddingHorizontal: focused ? 4 : 0,
-          paddingVertical: 8,
-          borderRadius: 16,
-        }}>
-          <AntDesign name="heart" size={22} color={focused ? Colors.background : Colors.mutedText} />
-          {focused && (
-            <Text 
-              style={{
-                color: Colors.background,
-                fontWeight: "600",
-                fontSize: 12,
-                marginLeft: 4,
-                textAlign: 'right',
-                flexShrink: 1,
-              }}
-              numberOfLines={1}
-            >
-              الإعجابات
-            </Text>
-          )}
-        </View>
-      ),
-    },
-    {
-      name: "المحادثات",
-      component: Chat,
-      icon: ({ focused, color, size }) => (
-        <View style={{ 
-          flexDirection: 'row', 
-          alignItems: 'center', 
-          justifyContent: 'center',
-          width: focused ? 100 : 40,
-          height: 40,
-          backgroundColor: focused ? Colors.primary : 'transparent',
-          paddingHorizontal: focused ? 4 : 0,
-          paddingVertical: 8,
-          borderRadius: 16,
-        }}>
-          <Ionicons name="chatbubble-ellipses" size={22} color={focused ? Colors.background : Colors.mutedText} />
-          {focused && (
-            <Text 
-              style={{
-                color: Colors.background,
-                fontWeight: "600",
-                fontSize: 12,
-                marginLeft: 4,
-                textAlign: 'right',
-                flexShrink: 1,
-              }}
-              numberOfLines={1}
-            >
-              المحادثات
-            </Text>
-          )}
-        </View>
-      ),
-    },
-    {
       name: "حسابي",
       component: Profile,
+      options: {
+        header: () => <Header />,
+      },
       icon: ({ focused, color, size }) => (
         <View style={{ 
-          flexDirection: 'row', 
+          flexDirection: 'row-reverse', 
           alignItems: 'center', 
           justifyContent: 'center',
           width: focused ? 100 : 40,
@@ -183,13 +87,124 @@ const ProtectedScreens: React.FC = () => {
                 color: Colors.background,
                 fontWeight: "600",
                 fontSize: 12,
-                marginLeft: 4,
+                marginRight: 4,
                 textAlign: 'right',
                 flexShrink: 1,
               }}
               numberOfLines={1}
             >
               حسابي
+            </Text>
+          )}
+        </View>
+      ),
+    },
+    {
+      name: "المحادثات",
+      component: Chat,
+      options: {
+        header: () => <Header />,
+      },
+      icon: ({ focused, color, size }) => (
+        <View style={{ 
+          flexDirection: 'row-reverse', 
+          alignItems: 'center', 
+          justifyContent: 'center',
+          width: focused ? 100 : 40,
+          height: 40,
+          backgroundColor: focused ? Colors.primary : 'transparent',
+          paddingHorizontal: focused ? 4 : 0,
+          paddingVertical: 8,
+          borderRadius: 16,
+        }}>
+          <Ionicons name="chatbubble-ellipses" size={22} color={focused ? Colors.background : Colors.mutedText} />
+          {focused && (
+            <Text 
+              style={{
+                color: Colors.background,
+                fontWeight: "600",
+                fontSize: 12,
+                marginRight: 4,
+                textAlign: 'right',
+                flexShrink: 1,
+              }}
+              numberOfLines={1}
+            >
+              المحادثات
+            </Text>
+          )}
+        </View>
+      ),
+    },
+    {
+      name: "الإعجابات",
+      component: LikesScreen,
+      options: {
+        header: () => <Header />,
+      },
+      icon: ({ focused, color, size }) => (
+        <View style={{ 
+          flexDirection: 'row-reverse', 
+          alignItems: 'center', 
+          justifyContent: 'center',
+          width: focused ? 100 : 40,
+          height: 40,
+          backgroundColor: focused ? Colors.primary : 'transparent',
+          paddingHorizontal: focused ? 4 : 0,
+          paddingVertical: 8,
+          borderRadius: 16,
+        }}>
+          <AntDesign name="heart" size={22} color={focused ? Colors.background : Colors.mutedText} />
+          {focused && (
+            <Text 
+              style={{
+                color: Colors.background,
+                fontWeight: "600",
+                fontSize: 12,
+                marginRight: 4,
+                textAlign: 'right',
+                flexShrink: 1,
+              }}
+              numberOfLines={1}
+            >
+              الإعجابات
+            </Text>
+          )}
+        </View>
+      ),
+    },
+    {
+      name: "الرئيسية",
+      component: Home,
+      options: {
+        header: () => <Header />,
+      },
+      icon: ({ focused, color, size }) => (
+        <View style={{ 
+          flexDirection: 'row-reverse', 
+          alignItems: 'center', 
+          justifyContent: 'center',
+          width: focused ? 100 : 40,
+          height: 40,
+          backgroundColor: focused ? Colors.primary : 'transparent',
+          paddingHorizontal: focused ? 4 : 0,
+          paddingVertical: 8,
+          borderRadius: 16,
+        }}>
+          <Ionicons name="home" size={22} color={focused ? Colors.background : Colors.mutedText} />
+          {focused && (
+            <Text 
+              style={{
+                color: Colors.background,
+                fontWeight: "600",
+                fontSize: 12,
+                marginRight: 4,
+                textAlign: 'right',
+                flexShrink: 1,
+              }}
+              numberOfLines={1}
+            >
+              الرئيسية
             </Text>
           )}
         </View>
@@ -203,7 +218,7 @@ const ProtectedScreens: React.FC = () => {
       screenOptions={{
         tabBarStyle: commonTabBarStyle,
         tabBarLabel: () => null,
-        headerShown: false,
+        headerShown: true,
       }}
     >
       {screens.map((screen, index) => (
@@ -212,6 +227,7 @@ const ProtectedScreens: React.FC = () => {
           name={screen.name}
           component={screen.component}
           options={{
+            ...screen.options,
             tabBarIcon: ({ focused, color, size }) => screen.icon({ focused, color, size }),
           }}
           listeners={{
