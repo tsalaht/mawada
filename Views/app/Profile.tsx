@@ -14,7 +14,7 @@ const Profile: React.FC = () => {
   return (
     <View style={{ flex: 1, backgroundColor: '#FFFFFF' }}>
       <Header 
-        onSearch={handleSearch}
+   
         onProfilePress={handleProfilePress}
       />
       {/* Add your profile content here */}

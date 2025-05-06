@@ -3,7 +3,7 @@ import { View } from 'react-native';
 import Header from '../Components/Header';
 
 const Likes: React.FC = () => {
-  const handleSearch = (text: string) => {
+  const handleSearch:any = (text:any) => {
     console.log('Searching in Likes:', text);
   };
 
@@ -14,7 +14,7 @@ const Likes: React.FC = () => {
   return (
     <View style={{ flex: 1, backgroundColor: '#FFFFFF' }}>
       <Header 
-        onSearch={handleSearch}
+
         onProfilePress={handleProfilePress}
       />
       {/* Add your likes content here */}
