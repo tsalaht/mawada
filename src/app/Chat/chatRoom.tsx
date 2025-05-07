@@ -188,7 +188,7 @@ const ChatRoom: React.FC = () => {
         <KeyboardAvoidingView
           behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
           style={styles.keyboardView}
-          keyboardVerticalOffset={Platform.OS === 'ios' ? 90 : 0}
+          keyboardVerticalOffset={Platform.OS === 'ios' ? 110 : 70} // Adjusted for bottom bar and header
         >
           <FlatList
             ref={flatListRef}
@@ -239,7 +239,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: Colors.background,
-    paddingBottom:60
+    paddingBottom: 50, // Preserved for bottom bar
   },
   gradient: {
     flex: 1,
@@ -251,12 +251,11 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: 0,
     width: '100%',
-    padding: 8,
+    padding: 2,
     zIndex: 2,
-    backgroundColor: Colors.background,
   },
   backButton: {
-    padding: 8,
+    padding: 2,
   },
   keyboardView: {
     flex: 1,
@@ -267,7 +266,7 @@ const styles = StyleSheet.create({
   },
   messagesContent: {
     paddingBottom: 16,
-    paddingTop: 8,
+    flexGrow: 1,
   },
   messageContainer: {
     maxWidth: '80%',
@@ -317,6 +316,7 @@ const styles = StyleSheet.create({
     borderTopColor: Colors.primary + '20',
     position: 'relative',
     zIndex: 1,
+    marginBottom: 10,
   },
   input: {
     flex: 1,

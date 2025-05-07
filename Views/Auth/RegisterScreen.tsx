@@ -302,7 +302,7 @@ const RegisterScreen = () => {
       justifyContent: 'space-between',
       padding: 16,
       backgroundColor: Colors.surface,
-      marginBottom:50
+      marginBottom:20
     },
     button: {
       paddingVertical: 12,
