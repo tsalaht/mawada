@@ -15,6 +15,7 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { LinearGradient } from 'expo-linear-gradient';
 import { MaterialIcons } from '@expo/vector-icons';
+import Feather from '@expo/vector-icons/Feather';
 import * as ExpoImagePicker from 'expo-image-picker';
 import { useNavigation } from '@react-navigation/native';
 import Colors from '../../../Views/Colors/Color';
@@ -188,7 +189,7 @@ const ChatRoom: React.FC = () => {
         <KeyboardAvoidingView
           behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
           style={styles.keyboardView}
-          keyboardVerticalOffset={Platform.OS === 'ios' ? 110 : 70} // Adjusted for bottom bar and header
+          keyboardVerticalOffset={Platform.OS === 'ios' ? 110 : 0} // Adjusted for bottom bar and header
         >
           <FlatList
             ref={flatListRef}
@@ -226,7 +227,7 @@ const ChatRoom: React.FC = () => {
               textAlign="right"
             />
             <TouchableOpacity style={styles.sendButton} onPress={sendMessage}>
-              <Text style={styles.sendText}>إرسال</Text>
+            <Feather name="send" size={24} color="white" />
             </TouchableOpacity>
           </View>
         </KeyboardAvoidingView>
@@ -239,7 +240,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: Colors.background,
-    paddingBottom: 50, // Preserved for bottom bar
+    paddingBottom: 10, // Preserved for bottom bar
   },
   gradient: {
     flex: 1,
@@ -249,10 +250,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderBottomColor: Colors.primary + '20',
     position: 'absolute',
-    top: 0,
+    top: 20,
     width: '100%',
     padding: 2,
     zIndex: 2,
+    left:5
   },
   backButton: {
     padding: 2,
@@ -316,7 +318,7 @@ const styles = StyleSheet.create({
     borderTopColor: Colors.primary + '20',
     position: 'relative',
     zIndex: 1,
-    marginBottom: 10,
+    // marginBottom: 10,
   },
   input: {
     flex: 1,
@@ -341,6 +343,8 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     paddingHorizontal: 16,
     paddingVertical: 8,
+    alignItems:"center",
+    justifyContent:"center"
   },
   sendText: {
     color: Colors.background,

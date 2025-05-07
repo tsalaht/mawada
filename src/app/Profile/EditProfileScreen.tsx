@@ -92,7 +92,7 @@ const EditProfileScreen: React.FC = () => {
         style={{ flex: 1 }}
       >
         <Box safeAreaTop />
-        <Box flexDirection="row" justifyContent="space-between" alignItems="center" px={4} mt={-4}>
+        <Box flexDirection="row" justifyContent="space-between" alignItems="center" px={4} mt={5}>
           <Pressable onPress={() => navigation.goBack()}>
             <Icon
               as={MaterialIcons}

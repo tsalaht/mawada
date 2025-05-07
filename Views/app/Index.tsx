@@ -42,7 +42,6 @@ const ProtectedScreens: React.FC = () => {
     shadowColor: Colors.primary,
     shadowOffset: { width: 0, height: -4 },
     shadowRadius: 8,
-    paddingBottom: 10,
     paddingTop: 10,
     paddingHorizontal: 20,
     position: 'absolute' as const,
@@ -101,7 +100,7 @@ const ProtectedScreens: React.FC = () => {
     },
     {
       name: "المحادثات",
-      component: Chat,
+      component: ChatScreen,
       options: {
         header: () => <Header />,
       },

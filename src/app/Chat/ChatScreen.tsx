@@ -56,7 +56,7 @@ const ChatScreen: React.FC = () => {
   const renderConversation = ({ item }: { item: Conversation }) => (
     <TouchableOpacity
       style={styles.conversationItem}
-      onPress={() => navigation.navigate('chatRoom', { conversationId: item.id })}
+      onPress={() => navigation.navigate('ChatRoom', { conversationId: item.id })}
     >
       <Image source={{ uri: item.avatar }} style={styles.avatar} />
       <View style={styles.conversationInfo}>

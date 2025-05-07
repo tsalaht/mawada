@@ -16,18 +16,8 @@ const Chat: React.FC<any> = () => {
         options={{
           headerShown: false,
         }}
-      />
-      <Stack.Screen
-        name="chatRoom"
-        component={chatRoom}
-        options={{
-          headerShown: false,
-        }}
-      />
-    
-   
-    
-    </Stack.Navigator>
+      /> 
+      </Stack.Navigator>
   );
 };
 
